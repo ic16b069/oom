@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace task3
 {
@@ -19,12 +20,16 @@ namespace task3
         public string Einheit { get; set; }
         public decimal Preis_pro_Einheit { get; set; }
 
-        public Artikel(string newArtikelnummer, string newEinheit, decimal newPreis)
+        [JsonConstructor]
+        public Artikel(string artikelnummer, string einheit, decimal preis_pro_Einheit)
         {
-            if (newPreis <= 0) throw new ArgumentOutOfRangeException("Der Preis muss groesser als 0 sein");
-            Preis_pro_Einheit = newPreis;
-            Einheit = newEinheit;
-            Artikelnummer = newArtikelnummer;
+            if (preis_pro_Einheit <= 0) throw new ArgumentOutOfRangeException("Der Preis muss groesser als 0 sein");
+            if (string.IsNullOrWhiteSpace(artikelnummer)) throw new ArgumentException("Artikelnummer darf nicht leer sein", nameof(artikelnummer));
+            Artikelnummer = artikelnummer;
+            Einheit = einheit;
+            Preis_pro_Einheit = preis_pro_Einheit;
+
+
         }
 
 
@@ -39,12 +44,14 @@ namespace task3
         public decimal Preis_pro_Einheit { get; set; }
         public string Herkunft { get; set; }
 
-        public Muster(string newHerkunft, string newEinheit, decimal newPreis)
+        [JsonConstructor]
+        public Muster(string herkunft, string einheit, decimal preis_pro_Einheit)
         {
-            if (newPreis <= 0) throw new ArgumentOutOfRangeException("Der Preis muss groesser als 0 sein");
-            Preis_pro_Einheit = newPreis;
-            Einheit = newEinheit;
-            Herkunft=newHerkunft;
+            if (preis_pro_Einheit <= 0) throw new ArgumentOutOfRangeException("Der Preis muss groesser als 0 sein");
+            if (string.IsNullOrWhiteSpace(herkunft)) throw new ArgumentException("Das Herkunftsland darf nicht leer sein.", nameof(herkunft));
+            Preis_pro_Einheit = preis_pro_Einheit;
+            Einheit = einheit;
+            Herkunft=herkunft;
         }
 
 
@@ -80,13 +87,15 @@ namespace task3
             Console.WriteLine("Der Preis für {0}  {1} Proficutter = {2} ", Anzahl_Proficutter, Proficutter.Einheit, Proficutter.Preis_pro_Einheit * Anzahl_Proficutter);
             Console.WriteLine("Der Preis für {0}  {1} Mineralwolle = {2} ", Anzahl_Mineralwolle, Mineralwolle.Einheit, Mineralwolle.Preis_pro_Einheit * Anzahl_Mineralwolle);
             Console.WriteLine("Der Preis für {0}  {1} Brandschutzband = {2} ", Anzahl_Brandschutz, Brandschutzband.Einheit, Brandschutzband.Preis_pro_Einheit * Anzahl_Brandschutz);
-
+            
+            Json.Run(verkauf);
         }
         public static void Quartals_erhohung(decimal Preis_pro_Einheit)
         {
             Console.WriteLine("Mineralwollpreis neu: {0}", 2 * Preis_pro_Einheit);
         }
-      
+        
+           
     }
 
 }
